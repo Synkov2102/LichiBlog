@@ -9,7 +9,7 @@ export default function Comments() {
     return (
         <div className="flex flex-col max-w-xs mt-10">
             <h3>Комментарии</h3>
-            {comments?.length &&
+            {!!comments?.length &&
                 comments.map((comment) => (
                     <div className="mb-2">
                         <h4 className="truncate">{comment.email}</h4>
