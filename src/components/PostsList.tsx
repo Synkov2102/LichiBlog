@@ -1,16 +1,27 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect } from 'react'
 import Post from './Post'
+import usePosts from '@/store'
+import PreviewModal from './PreviewModal'
+import getAllPosts from '@/services/getPosts'
 
-interface IProps {
-    articles: Array<any>
-}
+export default function PostList() {
+    const posts = usePosts((state) => state.posts)
+    const initPosts = usePosts((state) => state.initPosts)
 
-export default function PostList({ articles }: IProps) {
+    useEffect(() => {
+        getAllPosts().then(initPosts)
+    }, [initPosts])
+
     return (
-        <section className="container grid grid-cols-1 md:grid-cols-4 gap-x-4 gap-y-8 py-10">
-            {articles.map((article) => (
-                <Post key={article.title} article={article} />
-            ))}
-        </section>
+        <>
+            <PreviewModal />
+            <section className="container grid grid-cols-1 md:grid-cols-4 gap-x-4 gap-y-8 py-10">
+                {posts.map((post) => (
+                    <Post key={post.id} post={post} />
+                ))}
+            </section>
+        </>
     )
 }

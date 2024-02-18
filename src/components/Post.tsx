@@ -1,38 +1,34 @@
 'use client'
 
 import React from 'react'
-import SocialButton from './SocialButton'
-import SvgSelector from './SvgSelector'
+import { motion } from 'framer-motion'
+import usePosts from '@/store'
 
 interface IProps {
-    article: {
+    post: {
+        id: number
         title: string
-        text: string
+        body: string
     }
 }
 
-export default function Post({ article }: IProps) {
-    const { title, text } = article
-    return (
-        <div className="bg-main p-4 rounded-md drop-shadow-md flex flex-col justify-between">
-            <div>
-                <h2 className="text-xl mb-2">{title}</h2>
-                <p className="truncate">{text}</p>
-            </div>
+export default function Post({ post }: IProps) {
+    const setPostPreview = usePosts((state) => state.setPostPreview)
+    const { title, body } = post
 
-            <div className="flex justify-between mt-2">
-                <div className="flex mt-2 gap-2">
-                    <SocialButton onClick={() => {}}>
-                        <SvgSelector id="like" />
-                    </SocialButton>
-                    <SocialButton onClick={() => {}}>
-                        <SvgSelector id="dislike" />
-                    </SocialButton>
-                </div>
-                <SocialButton onClick={() => {}}>
-                    <SvgSelector id="comment" />
-                </SocialButton>
+    const handleClick = () => setPostPreview(post.id)
+
+    return (
+        <motion.article
+            whileTap={{ scale: 0.985 }}
+            className="bg-main p-4 cursor-pointer rounded-md drop-shadow-md flex flex-col justify-between"
+            onClick={handleClick}
+            role="presentation"
+        >
+            <div>
+                <h2 className="text-xl mb-2 truncate">{title}</h2>
+                <p className="truncate">{body}</p>
             </div>
-        </div>
+        </motion.article>
     )
 }
